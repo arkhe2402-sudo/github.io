@@ -1,10 +1,1248 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta name="naver-site-verification" content="19f10d16e18e9678bcf9c9928f20d7b60e2caaa1" />
-    <meta http-equiv="refresh" content="0; url='https://arkhe2402-sudo.github.io/daehwa-house/'">
-   </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대화원룸 | 프리미엄 1인 주거 공간</title>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=d55d9a1b03cdfd3e2a8ce692c54c161d"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+:root {
+    --primary:#d97706; --primary-dark:#b45309; --secondary:#1e293b;
+    --accent:#38bdf8; --text-dark:#1e293b; --text-muted:#64748b;
+    --bg:#f8fafc; --bg-card:#ffffff; --border:#e2e8f0;
+    --radius:12px; --radius-sm:8px; --shadow:0 4px 20px rgba(0,0,0,.08);
+    --admin-color:#0f172a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:var(--bg);color:var(--text-dark);line-height:1.6;}
+a{text-decoration:none;color:inherit;}
+img{max-width:100%;}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;width:100%;background:#fff;border-bottom:2px solid var(--primary);z-index:1000;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.nav-container{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:68px;}
+.logo{font-size:1.5rem;font-weight:900;color:var(--primary);display:flex;align-items:center;gap:8px;}
+.logo span{color:var(--secondary);font-weight:400;font-size:1rem;}
+nav{display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.nav-link{padding:6px 12px;font-weight:600;color:var(--text-dark);border-radius:6px;transition:background .2s;font-size:.9rem;cursor:pointer;}
+.nav-link:hover{background:#fef3c7;color:var(--primary);}
+.btn-portal{background:var(--secondary);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.85rem;display:flex;align-items:center;gap:6px;transition:background .2s;}
+.btn-portal:hover{background:#334155;}
+.btn-admin-gate{background:var(--admin-color);color:white;border:none;padding:7px 14px;border-radius:6px;font-weight:bold;font-size:.82rem;cursor:pointer;margin-left:8px;white-space:nowrap;}
+.menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+.menu-toggle span{display:block;width:24px;height:2px;background:var(--secondary);border-radius:2px;}
+
+/* 공용 버튼 & 레이아웃 */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:var(--radius-sm);font-weight:700;font-size:.95rem;cursor:pointer;border:none;transition:all .2s;}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover{background:var(--primary-dark);}
+.btn-secondary{background:transparent;color:var(--secondary);border:2px solid var(--secondary);}
+.btn-secondary:hover{background:var(--secondary);color:#fff;}
+.btn-accent{background:var(--accent);color:var(--secondary);}
+.container{max-width:1200px;margin:0 auto;padding:0 24px;}
+.section-title{text-align:center;margin-bottom:48px;}
+.section-title h2{font-size:2rem;font-weight:800;margin-bottom:12px;}
+.section-title p{color:var(--text-muted);font-size:1rem;}
+section{padding:80px 0;}
+
+/* TAB SPA */
+.tab-content{display:none;margin-top:68px;}
+.tab-content.active{display:block;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%);padding:80px 0;}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.hero-text h1{font-size:2.6rem;font-weight:900;color:#fff;line-height:1.3;margin-bottom:20px;}
+.hero-text h1 span{color:var(--primary);}
+.hero-text p{color:#94a3b8;font-size:1rem;margin-bottom:32px;line-height:1.8;}
+.hero-buttons{display:flex;gap:16px;flex-wrap:wrap;}
+.hero-slider{position:relative;border-radius:var(--radius);overflow:hidden;height:360px;box-shadow:var(--shadow);}
+.slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .8s;background-color:#334155;}
+.slide.active{opacity:1;}
+.slider-dots{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.feature-card{background:var(--bg-card);padding:32px 24px;border-radius:var(--radius);box-shadow:var(--shadow);text-align:center;border-top:4px solid var(--primary);}
+.feature-icon{font-size:2rem;color:var(--primary);margin-bottom:16px;}
+.feature-card h3{font-size:1.1rem;font-weight:700;margin-bottom:12px;}
+.feature-card p{color:var(--text-muted);font-size:.9rem;line-height:1.7;}
+
+/* GALLERY */
+.gallery-section{background:var(--secondary);}
+.gallery-section .section-title h2{color:#e2e8f0;}
+.gallery-section .section-title p{color:#94a3b8;}
+.gallery-container{display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:start;}
+.gallery-viewer{position:relative;border-radius:var(--radius);overflow:hidden;background:#0f172a;min-height:420px;}
+.gallery-viewer img{width:100%;height:420px;object-fit:cover;display:block;}
+.gallery-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 12px;}
+.gallery-btn{background:rgba(0,0,0,.5);color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1rem;transition:background .2s;}
+.gallery-btn:hover{background:var(--primary);}
+.room-desc{background:var(--bg-card);border-radius:var(--radius);padding:28px;}
+.room-desc h3{font-size:1.3rem;font-weight:800;margin-bottom:8px;}
+.price{font-size:1.1rem;font-weight:700;color:var(--primary);margin-bottom:16px;}
+.room-details-list{list-style:none;}
+.room-details-list li{padding:8px 0;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:.9rem;display:flex;align-items:center;gap:8px;}
+.room-details-list li::before{content:'✓';color:var(--primary);font-weight:bold;}
+
+/* LOCATION */
+.map-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+.map-wrapper{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:#e2e8f0;}
+#map{height:380px;width:100%;}
+.map-info h3{font-size:1.3rem;font-weight:800;margin-bottom:16px;}
+.address-box{background:var(--bg);border-radius:var(--radius-sm);padding:16px;margin-bottom:20px;}
+.address-box strong{display:block;font-size:.75rem;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.transit-list{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.transit-item{display:flex;align-items:center;gap:12px;font-size:.9rem;}
+.transit-badge{padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:700;color:#fff;}
+.badge-subway-2{background:#6366f1;}.badge-subway-7{background:#10b981;}.badge-walk{background:var(--primary);}
+
+/* CONTACT */
+.contact-section{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%);}
+.contact-section .section-title h2{color:#fff;}
+.contact-section .section-title p{color:#94a3b8;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+.contact-card{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.06);border-radius:var(--radius-sm);padding:20px;margin-bottom:16px;}
+.contact-card-icon{width:48px;height:48px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;flex-shrink:0;}
+.contact-card-text h4{color:#fff;font-size:.9rem;margin-bottom:4px;}
+.contact-card-text p{color:#94a3b8;font-size:.85rem;}
+.contact-form-panel{background:var(--bg-card);border-radius:var(--radius);padding:32px;}
+.form-group{margin-bottom:20px;}
+.form-group label{display:block;font-weight:600;font-size:.9rem;margin-bottom:8px;color:var(--text-dark);}
+.form-control{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:.95rem;font-family:inherit;background:#fff;color:var(--text-dark);transition:border-color .2s;}
+.form-control:focus{outline:none;border-color:var(--primary);}
+textarea.form-control{height:120px;resize:vertical;}
+
+/* PORTAL / DASHBOARD */
+.portal-section{padding:60px 0;}
+.login-card{max-width:460px;margin:0 auto;background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow);padding:48px 40px;}
+.login-header{text-align:center;margin-bottom:32px;}
+.login-header h2{font-size:1.5rem;font-weight:800;margin-bottom:8px;}
+.login-header p{color:var(--text-muted);font-size:.9rem;}
+.login-demo-info{background:#f0f9ff;border-radius:var(--radius-sm);padding:14px;font-size:.85rem;color:#0369a1;margin-bottom:24px;line-height:1.7;}
+.login-demo-info code{background:#e0f2fe;padding:1px 5px;border-radius:3px;}
+
+/* 대시보드 컨테이너 중앙 정렬 및 최대너비 확보 */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 28px;
+    align-items: start;
+    padding: 40px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.dashboard-sidebar{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;position:sticky;top:88px;}
+.user-profile{text-align:center;padding-bottom:20px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.user-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:#fff;font-size:1.4rem;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+.user-name{font-weight:700;font-size:1rem;}.user-room{font-size:.85rem;color:var(--text-muted);}
+.sidebar-menu{list-style:none;}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--radius-sm);cursor:pointer;font-size:.9rem;font-weight:600;color:var(--text-muted);transition:all .2s;margin-bottom:4px;}
+.sidebar-item:hover,.sidebar-item.active{background:#fef3c7;color:var(--primary);}
+.sidebar-item.sidebar-logout:hover{background:#fee2e2;color:#dc2626;}
+.dashboard-main-panel{min-width:0;}
+.dashboard-view{display:none;}.dashboard-view.active{display:block;}
+.dashboard-header-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.dashboard-header-bar h2{font-size:1.3rem;font-weight:800;}
+.board-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;margin-bottom:20px;}
+.board-card h3{font-size:1rem;font-weight:700;margin-bottom:16px;}
+
+/* 공지사항 */
+.notice-list{display:flex;flex-direction:column;gap:12px;}
+.notice-item{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-radius:var(--radius-sm);border-left:4px solid var(--primary);background:#fffbeb;flex-wrap:wrap;gap:8px;}
+.notice-item .notice-title{font-weight:600;font-size:.95rem;}
+.notice-item .notice-date{font-size:.8rem;color:var(--text-muted);white-space:nowrap;}
+.notice-del-btn{background:#fee2e2;color:#dc2626;border:none;padding:3px 8px;border-radius:4px;font-size:.75rem;cursor:pointer;margin-left:8px;display:none;}
+.admin-mode .notice-del-btn{display:inline-block;}
+
+/* 하자보수 */
+.maintenance-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+.stat-card{background:var(--bg-card);border-radius:var(--radius);padding:20px;text-align:center;box-shadow:var(--shadow);}
+.stat-number{font-size:2rem;font-weight:900;color:var(--primary);}
+.stat-label{font-size:.85rem;color:var(--text-muted);margin-top:4px;}
+.maintenance-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.request-form-card,.request-list-card{background:var(--bg-card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+.request-items{display:flex;flex-direction:column;gap:10px;max-height:360px;overflow-y:auto;}
+.request-item{padding:12px 16px;background:var(--bg);border-radius:var(--radius-sm);border-left:3px solid var(--primary);}
+.req-title{font-weight:600;font-size:.9rem;}.req-meta{font-size:.78rem;color:var(--text-muted);margin-top:4px;}
+.status-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:700;}
+.badge-waiting{background:#fee2e2;color:#dc2626;}.badge-done{background:#dcfce7;color:#16a34a;}
+
+/* 공용시설 예약 */
+.facility-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.facility-card{background:var(--bg-card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);text-align:center;cursor:pointer;transition:transform .2s;}
+.facility-card:hover{transform:translateY(-4px);}
+.facility-icon{font-size:2rem;margin-bottom:12px;}
+.facility-card h4{font-weight:700;margin-bottom:8px;}.facility-card p{font-size:.82rem;color:var(--text-muted);}
+.booking-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;align-items:center;justify-content:center;}
+.booking-modal.open{display:flex;}
+.modal-inner{background:var(--bg-card);border-radius:var(--radius);padding:32px;max-width:480px;width:90%;}
+.close-modal-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;float:right;color:var(--text-muted);}
+.time-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0;}
+.time-slot{padding:8px;text-align:center;border:1.5px solid var(--border);border-radius:6px;cursor:pointer;font-size:.8rem;transition:all .2s;}
+.time-slot.selected{border-color:var(--primary);background:#fef3c7;font-weight:700;}
+.time-slot.booked{background:#f1f5f9;color:var(--text-muted);cursor:not-allowed;text-decoration:line-through;}
+
+/* 1:1 문의 */
+.community-posts{display:flex;flex-direction:column;gap:14px;margin-top:16px;}
+.post-item{background:var(--bg);border-radius:var(--radius-sm);padding:16px;border-left:3px solid var(--accent);}
+.post-title{font-weight:700;margin-bottom:6px;}.post-content{font-size:.88rem;color:var(--text-muted);}
+.post-reply{margin-top:10px;background:#f0fdf4;border-radius:6px;padding:10px;font-size:.88rem;color:#166534;}
+.post-composer{background:var(--bg);border-radius:var(--radius-sm);padding:20px;margin-bottom:20px;display:none;}
+.post-composer.open{display:block;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* 입주민 연락처 테이블 */
+.resident-table{width:100%;border-collapse:collapse;font-size:.88rem;}
+.resident-table th{background:var(--secondary);color:#fff;padding:10px 14px;text-align:left;}
+.resident-table td{padding:10px 14px;border-bottom:1px solid var(--border);}
+.resident-table tr:hover td{background:#f8fafc;}
+.resident-table-container{max-height:380px;overflow-y:auto;}
+.res-del-btn{background:#fee2e2;color:#dc2626;border:none;padding:3px 8px;border-radius:4px;font-size:.75rem;cursor:pointer;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1.5fr auto;gap:12px;align-items:end;}
+
+/* SMS / Phone Link */
+.phone-connection-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:20px;display:flex;gap:24px;align-items:flex-start;}
+.device-status-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:.8rem;font-weight:700;}
+.disconnected{background:#fee2e2;color:#dc2626;}.connected{background:#dcfce7;color:#16a34a;}
+.progress-bar-container{background:#e2e8f0;border-radius:10px;height:8px;margin:12px 0;overflow:hidden;}
+.progress-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:10px;transition:width .3s;}
+.terminal-box{background:#0f172a;color:#4ade80;font-family:'Consolas',monospace;font-size:.78rem;padding:16px;border-radius:var(--radius-sm);height:220px;overflow-y:auto;line-height:1.7;}
+
+/* 갤러리 관리 카드 */
+.admin-gallery-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow);display:grid;grid-template-columns:200px 1fr;margin-bottom:12px;overflow:hidden;position:relative;}
+.admin-gallery-card img{width:200px;height:140px;object-fit:cover;display:block;}
+.admin-gallery-card-body{padding:14px;}
+.admin-gallery-card-body .card-title{font-weight:700;margin-bottom:4px;}
+.admin-gallery-card-body .card-price{font-size:.85rem;color:var(--primary);margin-bottom:6px;}
+.admin-gallery-card-body .card-opts{font-size:.82rem;color:var(--text-muted);}
+.del-room-btn{position:absolute;top:8px;right:8px;background:#dc2626;color:#fff;border:none;padding:4px 8px;border-radius:4px;font-size:.75rem;cursor:pointer;}
+
+/* Apps Script 설정 바 */
+.sheet-config-bar{background:#1e293b;color:#94a3b8;padding:10px 24px;display:none;align-items:center;gap:12px;font-size:.82rem;position:fixed;bottom:0;left:0;right:0;z-index:900;}
+.admin-mode .sheet-config-bar{display:flex;}
+.sheet-config-bar input{flex:1;padding:6px 10px;border-radius:4px;border:none;font-size:.82rem;background:#334155;color:#e2e8f0;}
+.sheet-sync-btn{background:#38bdf8;color:#0f172a;border:none;padding:6px 12px;border-radius:4px;font-size:.82rem;cursor:pointer;font-weight:700;white-space:nowrap;}
+
+/* FOOTER */
+footer{background:#0f172a;color:#94a3b8;padding:40px 0 20px;}
+.footer-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start;}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+.footer-links a{color:#64748b;font-size:.85rem;transition:color .2s;}
+.footer-links a:hover{color:var(--primary);}
+
+/* 반응형 */
+@media(max-width:900px){
+    .hero-grid,.map-grid,.contact-grid,.gallery-container{grid-template-columns:1fr;}
+    .features-grid{grid-template-columns:1fr;}
+    .dashboard-container{grid-template-columns:1fr;}
+    .dashboard-sidebar{position:static;}
+    .maintenance-layout,.form-row{grid-template-columns:1fr;}
+    .facility-grid{grid-template-columns:1fr 1fr;}
+    .form-grid{grid-template-columns:1fr 1fr;}
+    nav{display:none;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:#fff;padding:16px;box-shadow:var(--shadow);gap:8px;}
+    nav.open{display:flex;}
+    .menu-toggle{display:flex;}
+    .admin-gallery-card{grid-template-columns:1fr;}
+    .admin-gallery-card img{width:100%;height:180px;}
+}
+@media(max-width:600px){
+    .facility-grid{grid-template-columns:1fr;}
+    .form-grid{grid-template-columns:1fr;}
+    .hero-text h1{font-size:1.8rem;}
+    .section-title h2{font-size:1.5rem;}
+    .sheet-config-bar{flex-direction:column;align-items:stretch;}
+    .phone-connection-card{flex-direction:column;}
+}
+    </style>
+</head>
 <body>
-    <p>페이지가 이동 중입니다. <a href="https://arkhe2402-sudo.github.io/daehwa-house/">이곳을 클릭하세요.</a></p>
+
+<header>
+    <div class="nav-container">
+        <a href="#" class="logo" data-tab="tab-home">
+            <i class="fa-solid fa-building-user"></i> 대화<span>원룸</span>
+        </a>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span><span></span><span></span>
+        </div>
+        <nav id="mainNav">
+            <a href="#intro" class="nav-link" data-tab="tab-home">소개</a>
+            <a href="#gallery" class="nav-link" data-tab="tab-home">룸 투어</a>
+            <a href="#location" class="nav-link" data-tab="tab-home">위치</a>
+            <a href="#contact" class="nav-link" data-tab="tab-home">입주 문의</a>
+            <button class="btn-portal" data-tab="tab-portal">
+                <i class="fa-solid fa-circle-user"></i> 입주민 포털
+            </button>
+            <button class="btn-admin-gate" id="system-lock-btn" onclick="toggleAdminAuth()">🔑 원장 로그인</button>
+        </nav>
+    </div>
+</header>
+
+<main id="tab-home" class="tab-content active">
+
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <h1>온전한 나를 위한<br><span>대화원룸 1인 공간</span></h1>
+                <p>세련된 디자인과 편리한 풀옵션, 입주민 전용 케어 서비스로 완벽한 독립 생활을 지원합니다.</p>
+                <div class="hero-buttons">
+                    <a href="#gallery" class="btn btn-primary">방 보러가기 <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="#contact" class="btn btn-secondary" style="color:#fff;border-color:#fff;">입주 상담 신청</a>
+                </div>
+            </div>
+            <div class="hero-slider">
+                <div class="slide active" style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="slider-dots" id="sliderDots"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="intro" class="container">
+        <div class="section-title">
+            <h2>대화원룸 프리미엄 서비스</h2>
+            <p>1인 가구가 가장 안심하고, 쾌적하게 생활할 수 있도록 최고의 편의시설을 제공합니다.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>철저한 3중 보안 시스템</h3>
+                <p>공동 현관 로비폰, 디지털 도어락, 24시간 CCTV로 홀로 사시는 입주자분들의 안전을 철저히 지킵니다.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-couch"></i></div>
+                <h3>스마트 풀옵션 빌트인</h3>
+                <p>세탁기, 냉장고, 인덕션, 에어컨은 풀옵션으로 빌트인되어 미니멀한 이사를 보장합니다.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-people-roof"></i></div>
+                <h3>입주민 전용 힐링 스페이스</h3>
+                <p>작성중입니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>대화원룸 공간 타입 안내</h2>
+                <p>용도와 크기에 따라 최적화된 방 구조를 갤러리로 직접 살펴보세요.</p>
+            </div>
+            <div class="gallery-container">
+                <div class="gallery-viewer">
+                    <img id="galleryImg" src="" alt="룸 사진" onerror="this.src='https://via.placeholder.com/800x420?text=No+Image';this.onerror=null;">
+                    <div class="gallery-nav">
+                        <button class="gallery-btn" id="galleryPrev"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="gallery-btn" id="galleryNext"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="room-desc">
+                    <h3 id="galleryTitle">로딩 중...</h3>
+                    <div class="price" id="galleryPrice"></div>
+                    <ul class="room-details-list" id="galleryOptions"></ul>
+                    <a href="#contact" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;">이 방 입주 문의하기</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="location" class="container">
+        <div class="section-title">
+            <h2>편리한 교통 및 위치 정보</h2>
+            <p>서울대학교 정문 및 관악산역 인근에 위치하여 학생들과 고시생, 직장인에게 최적의 입지입니다.</p>
+        </div>
+        <div class="map-grid">
+            <div class="map-wrapper"><div id="map"></div></div>
+            <div class="map-info">
+                <h3>대화원룸 찾아오시는 길</h3>
+                <div class="address-box">
+                    <strong>도로명 주소</strong>
+                    <p>서울 관악구 신림로3가길 46 대화원룸 (우편번호: 08815)</p>
+                    <strong style="margin-top: 8px;">지번 주소</strong>
+                    <p>서울 관악구 신림동 231-18</p>
+                </div>
+                <div class="transit-list">
+                    <div class="transit-item"><span class="transit-badge badge-subway-2">신림선</span><span>관악산역 1번 출구 도보 접근 용이</span></div>
+                    <div class="transit-item"><span class="transit-badge badge-subway-7">대학가</span><span>서울대학교 관악캠퍼스 정문 인근 도보권</span></div>
+                    <div class="transit-item"><span class="transit-badge badge-walk">편의</span><span>관악산 등산로 산책 코스 및 대학동 고시촌 인프라 밀집</span></div>
+                </div>
+                <a href="https://map.kakao.com" target="_blank" class="btn btn-secondary" style="justify-content:center;">
+                    <i class="fa-solid fa-map-location-dot"></i> 카카오맵 길찾기 바로가기
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>신속한 입주 문의 및 안내</h2>
+                <p>방 방문 예약 및 공실 현황 문의는 24시간 언제든 환영합니다.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info-panel">
+                    <div class="contact-card">
+                        <div class="contact-card-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="contact-card-text"><h4>대표 상담 유선번호</h4><p>02-333-8822 (오전 9시 ~ 오후 7시)</p></div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card-icon"><i class="fa-solid fa-comment-dots"></i></div>
+                        <div class="contact-card-text"><h4>카카오톡 채널 상담</h4><p>@대화원룸_신림 (24시간 챗봇 응대)</p></div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="contact-card-text">support@daehwaoneroom.com</div>
+                    </div>
+                </div>
+                <div class="contact-form-panel">
+                    <form id="inquiryForm">
+                        <div class="form-group"><label>성함</label><input type="text" id="inquiryName" class="form-control" placeholder="홍길동" required></div>
+                        <div class="form-group"><label>연락처</label><input type="tel" id="inquiryPhone" class="form-control" placeholder="010-1234-5678" required></div>
+                        <div class="form-group"><label>원하는 입주 시기 및 추가 문의사항</label><textarea id="inquiryMsg" class="form-control" placeholder="예: A타입 방을 보고 싶습니다. 서울대 통학 목적입니다."></textarea></div>
+                        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">입주 문의 접수하기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<main id="tab-portal" class="tab-content">
+
+    <section id="portal-login-view" class="portal-section container">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>대화원룸 입주민 전용 포털</h2>
+                <p>호실 번호와 원장님께 받은 비밀번호로 로그인하세요.</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>호실 번호</label>
+                    <input type="text" id="loginRoom" class="form-control" placeholder="예: 101호" required>
+                </div>
+                <div class="form-group">
+                    <label>비밀번호</label>
+                    <input type="password" id="loginPw" class="form-control" placeholder="원장님께 받은 비밀번호" required>
+                </div>
+                <div id="loginError" style="display:none;color:#dc2626;font-size:.85rem;margin-bottom:12px;padding:10px;background:#fee2e2;border-radius:6px;">
+                    호실 번호 또는 비밀번호가 올바르지 않습니다.
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;">로그인</button>
+            </form>
+            <p style="text-align:center;font-size:.82rem;color:var(--text-muted);margin-top:16px;">비밀번호를 모르시면 원장님께 문의하세요.</p>
+        </div>
+    </section>
+
+    <section id="portal-dashboard-view" style="display:none;">
+        <div class="dashboard-container">
+            <aside class="dashboard-sidebar">
+                <div class="user-profile">
+                    <div class="user-avatar" id="residentAvatarLetter">-</div>
+                    <div class="user-name" id="residentNameDisplay">입주민</div>
+                    <div class="user-room" id="residentRoomDisplay">-</div>
+                </div>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item active" data-view="view-notices"><i class="fa-solid fa-bullhorn"></i> 공지사항</li>
+                    <li class="sidebar-item" data-view="view-maintenance"><i class="fa-solid fa-screwdriver-wrench"></i> 하자 보수 신청</li>
+                    <li class="sidebar-item" data-view="view-community"><i class="fa-solid fa-user-shield"></i> 1:1 관리실 문의</li>
+                    <li class="sidebar-item sidebar-logout" id="sidebar-logout-btn" style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px;">
+                        <i class="fa-solid fa-right-from-bracket"></i> 로그아웃
+                    </li>
+                </ul>
+            </aside>
+            <main class="dashboard-main-panel">
+                <div id="view-notices" class="dashboard-view active">
+                    <div class="dashboard-header-bar"><h2>📢 전체 공지사항</h2></div>
+                    <div class="board-card"><div class="notice-list" id="portal-notice-list"></div></div>
+                </div>
+                <div id="view-maintenance" class="dashboard-view">
+                    <div class="dashboard-header-bar"><h2>🔧 하자보수/민원 접수 및 현황</h2></div>
+                    <div class="maintenance-stats">
+                        <div class="stat-card"><div class="stat-number" id="stat-total">0</div><div class="stat-label">누적 신청 건수</div></div>
+                        <div class="stat-card"><div class="stat-number" id="stat-waiting" style="color:#ef4444;">0</div><div class="stat-label">접수 대기 중</div></div>
+                        <div class="stat-card"><div class="stat-number" id="stat-done-m" style="color:#16a34a;">0</div><div class="stat-label">처리 완료</div></div>
+                    </div>
+                    <div class="maintenance-layout">
+                        <div class="request-form-card">
+                            <h3>수리 보수 신청하기</h3>
+                            <form id="maintenanceForm">
+                                <div class="form-group"><label>하자 위치 및 접수 요약</label><input type="text" id="maintTitle" class="form-control" placeholder="예: 세면대 배수관 누수" required></div>
+                                <div class="form-group"><label>자세한 고장 증상</label><textarea id="maintDesc" class="form-control" placeholder="구체적인 상황을 적어주세요." required></textarea></div>
+                                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">보수 신청 완료</button>
+                            </form>
+                        </div>
+                        <div class="request-list-card">
+                            <h3>나의 수리 신청 내역</h3>
+                            <div class="request-items" id="requestItems"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="view-community" class="dashboard-view">
+                    <div class="dashboard-header-bar">
+                        <h2>✉️ 관리실 1:1 비공개 요청</h2>
+                        <button class="btn btn-primary" id="toggleComposerBtn">문의 접수하기</button>
+                    </div>
+                    <div class="board-card">
+                        <div class="post-composer" id="postComposer">
+                            <form id="postForm">
+                                <div class="form-group"><label>요청 제목</label><input type="text" id="postTitle" class="form-control" placeholder="요청 요약 제목" required></div>
+                                <div class="form-group"><label>요청 내용</label><textarea id="postContent" class="form-control" placeholder="관리소에 보낼 세부 요청 내용" required></textarea></div>
+                                <button type="submit" class="btn btn-primary">등록하기</button>
+                            </form>
+                        </div>
+                        <div class="community-posts" id="resident-inquiry-list"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <section id="portal-admin-view" style="display:none;">
+        <div class="dashboard-container">
+            <aside class="dashboard-sidebar">
+                <div class="user-profile">
+                    <div class="user-avatar" style="background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);">대</div>
+                    <div class="user-name">관리실 총괄자</div>
+                    <div class="user-room" style="color:var(--accent);font-weight:bold;">대화원룸 본부</div>
+                </div>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item active" data-adminview="admin-view-notices"><i class="fa-solid fa-bullhorn"></i> 공지사항 작성</li>
+                    <li class="sidebar-item" data-adminview="admin-view-gallery"><i class="fa-solid fa-images"></i> 갤러리 사진 등록</li>
+                    <li class="sidebar-item" data-adminview="admin-view-residents"><i class="fa-solid fa-address-book"></i> 입주민 연락처</li>
+                    <li class="sidebar-item" data-adminview="admin-view-sms"><i class="fa-solid fa-comment-sms"></i> 전체 문자 발송</li>
+                    <li class="sidebar-item" data-adminview="admin-view-inquiries"><i class="fa-solid fa-clipboard-question"></i> 입주민 요청 관리</li>
+                    <li class="sidebar-item" onclick="changeAdminPassword()" style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px;color:var(--primary);">
+                        <i class="fa-solid fa-key"></i> 🔐 원장 비번 변경
+                    </li>
+                </ul>
+            </aside>
+            <main class="dashboard-main-panel">
+                <div id="admin-view-notices" class="dashboard-view active">
+                    <div class="dashboard-header-bar"><h2>📢 신규 공지사항 게시</h2></div>
+                    <div class="board-card">
+                        <form id="adminNoticeForm">
+                            <div class="form-group"><label>공지사항 제목</label><input type="text" id="noticeTitle" class="form-control" placeholder="공지 제목" required></div>
+                            <div class="form-group"><label>공지 세부 내용</label><textarea id="noticeContent" class="form-control" placeholder="공지 상세 내용" required style="height:200px;"></textarea></div>
+                            <button type="submit" class="btn btn-primary">공지 등록하기</button>
+                        </form>
+                    </div>
+                    <div class="board-card" style="margin-top:20px;">
+                        <h3>등록된 공지사항</h3>
+                        <div class="notice-list" id="admin-notice-list"></div>
+                    </div>
+                </div>
+
+                <div id="admin-view-gallery" class="dashboard-view">
+                    <div class="dashboard-header-bar"><h2>📸 룸 투어 사진 및 소개 등록</h2></div>
+                    <div class="board-card">
+                        <form id="adminGalleryForm">
+                            <div class="form-row">
+                                <div class="form-group"><label>원룸명 / 타입</label><input type="text" id="roomName" class="form-control" placeholder="예: 대화원룸 (A타입)" required></div>
+                                <div class="form-group"><label>임대 가격</label><input type="text" id="roomPrice" class="form-control" placeholder="예: 월세 60 / 보증금 1000" required></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label>전용 면적</label><input type="text" id="roomSize" class="form-control" placeholder="예: 전용 면적 20㎡ (약 6평)" required></div>
+                                <div class="form-group"><label>제공 옵션 (쉼표 구분)</label><input type="text" id="roomOptions" class="form-control" placeholder="에어컨, 세탁기, 무료인터넷" required></div>
+                            </div>
+                            <div class="form-group">
+                                <label>룸 사진 파일 업로드 (윈도우 탐색기에서 선택)</label>
+                                <input type="file" id="roomPhotoFile" class="form-control" accept="image/*" style="padding:10px;background:white;" onchange="handleGalleryImgFile(this)">
+                            </div>
+                            <div class="form-group">
+                                <label>또는 외부 이미지 URL</label>
+                                <input type="text" id="roomPhotoUrl" class="form-control" placeholder="https://... (파일 선택 시 자동 입력됩니다)">
+                            </div>
+                            <div class="form-group"><label>방 정보 세부 설명</label><textarea id="roomPhotoDesc" class="form-control" placeholder="원룸 입주 희망자에게 소개할 방의 특징을 작성해보세요." required style="height:100px;"></textarea></div>
+                            <button type="submit" class="btn btn-primary">새로운 방 등록하기</button>
+                        </form>
+                    </div>
+                    <div id="admin-gallery-list" style="margin-top:20px;"></div>
+                </div>
+
+                <div id="admin-view-residents" class="dashboard-view">
+                    <div class="dashboard-header-bar">
+                        <h2>👤 입주민 연락처 관리부</h2>
+                        <button class="btn btn-accent" id="seedResidentsBtn"><i class="fa-solid fa-users-gear"></i> 샘플 연락처 생성</button>
+                    </div>
+                    <div class="board-card" style="margin-bottom:20px;">
+                        <h3>신규 입주민 등록</h3>
+                        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:14px;">호실·이름·전화번호·비밀번호를 입력하세요. 입주민은 호실+비밀번호로 포털에 로그인합니다.</p>
+                        <form id="adminResidentForm" style="margin-top:4px;">
+                            <div style="display:grid;grid-template-columns:0.8fr 1fr 1.2fr 1fr auto;gap:10px;align-items:end;flex-wrap:wrap;">
+                                <div class="form-group" style="margin-bottom:0;"><label style="font-size:.82rem;">호실</label><input type="text" id="resRoom" class="form-control" placeholder="101호" required style="background:white;color:black;"></div>
+                                <div class="form-group" style="margin-bottom:0;"><label style="font-size:.82rem;">이름</label><input type="text" id="resName" class="form-control" placeholder="홍길동" required style="background:white;color:black;"></div>
+                                <div class="form-group" style="margin-bottom:0;"><label style="font-size:.82rem;">전화번호</label><input type="tel" id="resPhone" class="form-control" placeholder="010-1234-5678" required style="background:white;color:black;"></div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label style="font-size:.82rem;">포털 비밀번호</label>
+                                    <input type="text" id="resPw" class="form-control" placeholder="예: 1234" required style="background:white;color:black;">
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="justify-content:center;height:48px;white-space:nowrap;">추가하기</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="board-card">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <h3>전체 입주민 주소록 (<span id="residentsCount">0</span>명)</h3>
+                            <button class="btn btn-secondary" id="clearResidentsBtn" style="padding:6px 12px;font-size:12px;border-color:#fca5a5;color:#ef4444;">목록 초기화</button>
+                        </div>
+                        <div class="resident-table-container">
+                            <table class="resident-table">
+                                <thead><tr><th>호실</th><th>성명</th><th>전화번호</th><th>포털 비번</th><th style="width:80px;text-align:center;">관리</th></tr></thead>
+                                <tbody id="residentsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="admin-view-sms" class="dashboard-view">
+                    <div class="dashboard-header-bar"><h2>💬 전 세대 입주민 문자(SMS) 발송</h2></div>
+                    <div class="board-card" style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
+                        <div style="flex-shrink:0;">
+                            <div style="background:#0078d4;border-radius:12px;width:80px;height:80px;display:flex;align-items:center;justify-content:center;">
+                                <i class="fa-brands fa-windows" style="font-size:2.5rem;color:white;"></i>
+                            </div>
+                        </div>
+                        <div style="flex-grow:1;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                                <h4 style="font-size:16px;font-weight:800;">Windows Phone Link 연동</h4>
+                                <div id="deviceLinkBadge" class="device-status-badge disconnected">
+                                    <i class="fa-solid fa-circle-xmark"></i> 연결 대기중
+                                </div>
+                            </div>
+                            <p style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:14px;">
+                                Windows 10/11에 기본 설치된 <strong>휴대폰과 연결(Phone Link)</strong> 앱을 사용합니다.<br>
+                                PC와 안드로이드 스마트폰을 블루투스 또는 Wi-Fi로 페어링하면, 아래 버튼 클릭 한 번으로 Phone Link 문자 작성창이 자동으로 열립니다.
+                            </p>
+                            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                                <button type="button" class="btn btn-primary" id="pairDeviceBtn" style="background:#0078d4;border-color:#0078d4;">
+                                    <i class="fa-brands fa-windows"></i> Phone Link 앱 열기 &amp; 페어링
+                                </button>
+                                <span id="pairGuideText" style="font-size:12px;color:var(--text-muted);">※ 시작 메뉴 → "휴대폰과 연결" 검색 후 QR 스캔으로 연결하세요</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="board-card" style="background:#f0f9ff;border:1.5px solid #bae6fd;">
+                        <h3 style="color:#0369a1;margin-bottom:14px;">📋 Phone Link 문자 발송 방법</h3>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+                            <div style="background:white;border-radius:8px;padding:16px;text-align:center;">
+                                <div style="font-size:1.8rem;margin-bottom:8px;">📱</div>
+                                <div style="font-weight:700;font-size:.9rem;margin-bottom:4px;">① 스마트폰 연결</div>
+                                <div style="font-size:.8rem;color:var(--text-muted);">PC의 Phone Link 앱에서 QR 스캔으로 안드로이드 폰과 페어링</div>
+                            </div>
+                            <div style="background:white;border-radius:8px;padding:16px;text-align:center;">
+                                <div style="font-size:1.8rem;margin-bottom:8px;">✍️</div>
+                                <div style="font-weight:700;font-size:.9rem;margin-bottom:4px;">② 메시지 작성</div>
+                                <div style="font-size:.8rem;color:var(--text-muted);">아래 본문 입력 후 "Phone Link로 발송" 클릭 → 문자 작성창 자동 오픈</div>
+                            </div>
+                            <div style="background:white;border-radius:8px;padding:16px;text-align:center;">
+                                <div style="font-size:1.8rem;margin-bottom:8px;">🚀</div>
+                                <div style="font-weight:700;font-size:.9rem;margin-bottom:4px;">③ 순차 발송</div>
+                                <div style="font-size:.8rem;color:var(--text-muted);">입주민 전화번호가 자동 입력된 창이 순서대로 열려 발송 확인 후 전송</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="board-card">
+                        <h3 style="margin-bottom:6px;">문자 메시지 작성 및 전체 발송</h3>
+                        <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+                            현재 등록된 입주민: <strong id="smsResidentCount">0</strong>명 &nbsp;|&nbsp;
+                            발송 방법: PC에 연결된 본인 휴대폰 번호로 각 입주민에게 순차 발송
+                        </p>
+                        <div class="form-group">
+                            <label style="font-weight:700;">발송 메시지 본문</label>
+                            <textarea id="smsContent" class="form-control" placeholder="예) [대화원룸 관리실] 안녕하세요. 금일 오후 2시부터 소방 점검이 시작됩니다. 양해 부탁드립니다." style="height:130px;color:black;background:white;border:1.5px solid #cbd5e1;margin-top:6px;"></textarea>
+                            <div style="text-align:right;font-size:12px;color:var(--text-muted);margin-top:4px;"><span id="smsCharCount">0</span>자</div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="phoneLinkSendAllBtn" style="background:#0078d4;font-size:1rem;padding:14px 28px;">
+                            <i class="fa-brands fa-windows"></i> 전체 입주민에게 Phone Link로 순차 발송
+                        </button>
+                    </div>
+
+                    <div id="smsTerminalWrapper" style="display:none;">
+                        <div class="board-card" style="padding:20px;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                                <h4 style="font-size:14px;">발송 진행 현황</h4>
+                                <span id="smsProgressText" style="font-size:13px;color:var(--text-muted);">0 / 0</span>
+                            </div>
+                            <div class="progress-bar-container"><div id="smsProgressBar" class="progress-bar-fill"></div></div>
+                            <div id="smsTerminal" class="terminal-box" style="margin-top:12px;"></div>
+                            <button id="smsCancelBtn" class="btn btn-secondary" style="margin-top:12px;font-size:13px;padding:8px 16px;">⏹ 발송 중단</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="admin-view-inquiries" class="dashboard-view">
+                    <div class="dashboard-header-bar"><h2>✉️ 입주민 1:1 요청 및 문의 관리</h2></div>
+                    <div class="board-card"><div id="admin-inquiry-list" class="community-posts"></div></div>
+                </div>
+            </main>
+        </div>
+    </section>
+</main>
+
+<div class="sheet-config-bar" id="sheet-config-bar">
+    <span>🔗 Apps Script URL:</span>
+    <input type="text" id="google-sheet-url" placeholder="https://script.google.com/macros/s/.../exec">
+    <button class="sheet-sync-btn" onclick="syncWithGoogleSheet()">📥 전체 동기화</button>
+</div>
+
+<footer style="margin-bottom:0;" id="mainFooter">
+    <div class="container footer-grid">
+        <div>
+            <strong style="color:white;font-size:16px;">대화원룸 신림점</strong>
+            <p style="margin-top:8px;">상호명: 대화원룸 하우스 | 대표: 홍길동 | 등록번호: 120-00-55555</p>
+            <p>전화: 02-333-8822 | 주소: 서울 관악구 신림로3가길 46 대화원룸 (지번: 신림동 231-18) | 우편번호: 08815</p>
+        </div>
+        <div class="footer-links">
+            <a href="#">이용약관</a>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">입주규정안내</a>
+        </div>
+    </div>
+    <div class="container" style="text-align:center;margin-top:28px;font-size:12px;color:#475569;border-top:1px solid #1e293b;padding-top:20px;">
+        &copy; 2026 Daehwa Oneroom House. All Rights Reserved.
+    </div>
+</footer>
+
+<script>
+// ============================================================
+//  대화원룸 통합 시스템 JS
+// ============================================================
+
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbye2LYHRCzZUJ6Tg4w1IL9o4YvoF7C7-BhYVnu5Kl0enU6bgpZxxg4E5b77Jr1f-ljh/exec";
+
+// 비밀번호 로컬 영구 저장을 위한 초기 변수 세팅
+let ADMIN_PASSWORD = localStorage.getItem('daehwa_admin_pwd') || "1234";
+
+let APP_NOTICES = [
+    { id:1, title:"🌾 공용 세탁실 드럼세탁기 정기 세척 완료 공지", date:"2026-06-12", content:"세척 완료 후 정상 가동 중입니다." },
+    { id:2, title:"⚡ 여름철 냉방기 가동 시 창문 개방 절대 주의", date:"2026-06-05", content:"에너지 절약 및 냉방 효율을 위해 냉방기 가동 중 창문을 닫아주세요." }
+];
+let APP_ROOMS = [
+    { id:1, title:"01. 대화원룸 건물 외관 전경", img:"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80", options:"고급 외장 벽돌 인테리어 마감\n당당하고 세련된 건물 전경 비주얼", price:"월세 65 / 보증금 1000" },
+    { id:2, title:"02. 1층 메인 현관 로비", img:"https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&w=800&q=80", options:"자동 도어락 출입 차단 시스템\n입주민 전용 카드 및 비밀번호 운영", price:"월세 60 / 보증금 1000" },
+    { id:3, title:"03. 각층 복도", img:"https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=800&q=80", options:"대리석 바닥 마감 및 상시 청결 유지\n소음 방지 방음 도어 전면 설치", price:"월세 58 / 보증금 500" },
+    { id:4, title:"04. 프리미엄 외창방 (A룸)", img:"https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80", options:"대형 와이드 외창 채광 최적화\n풀옵션 가구 세트 컴팩트 배치", price:"월세 68 / 보증금 1000" },
+    { id:5, title:"05. 스탠다드 싱글룸 (B룸)", img:"https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80", options:"실속형 수납 공간 극대화 인테리어\n개인 침대 및 책상 의자 풀세트", price:"월세 60 / 보증금 500" },
+    { id:6, title:"06. 아늑한 내창방 (C룸)", img:"https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=80", options:"소음에 예민한 분들께 추천\n상시 강제 흡배기 환기 시스템 가동", price:"월세 55 / 보증금 500" },
+    { id:7, title:"07. 개인 샤워실 겸 화장실", img:"https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80", options:"트렌디한 화이트 타일 시공\n수압 강력 및 개별 온수기 상시 가동", price:"공용 시설" },
+    { id:8, title:"08. 필로티 전용 주차장", img:"https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&w=800&q=80", options:"눈비 걱정 없는 안심 필로티 주차\n가구당 주차 공간 확보", price:"공용 시설" },
+    { id:9, title:"09. 24시 공용 세탁실", img:"https://images.unsplash.com/photo-1545173168-9f1947eebd01?auto=format&fit=crop&w=800&q=80", options:"대용량 드럼 세탁기 상시 오픈\n최신 건조기 완비", price:"공용 시설" },
+    { id:10, title:"10. CCTV 안전 센터", img:"https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=800&q=80", options:"24시간 사각지대 없는 녹화 감시\n여성 입주민도 안심하는 보안", price:"공용 시설" },
+    { id:11, title:"11. 단지내 분리수거장", img:"https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=800&q=80", options:"주 2회 원장 직접 청소 및 관리\n악취 없는 청결 구역 유지", price:"공용 시설" },
+    { id:12, title:"12. 옥상 루프탑 휴게 전망대", img:"https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80", options:"간단한 이불 빨래 건조대 비치\n도심 속 시원한 바람과 휴식", price:"공용 시설" }
+];
+let APP_RESIDENTS = [];
+let APP_MAINTENANCE = [];
+let APP_COMMUNITY = [];
+let APP_BOOKINGS = {};
+let IS_ADMIN_LOGGED_IN = false;
+let CURRENT_GALLERY_IDX = 0;
+
+function escapeHtml(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function saveLocalData() {
+    try { localStorage.setItem('daehwa_v2', JSON.stringify({ notices:APP_NOTICES, rooms:APP_ROOMS, residents:APP_RESIDENTS, maintenance:APP_MAINTENANCE, community:APP_COMMUNITY, bookings:APP_BOOKINGS })); }
+    catch(e) { console.error('저장 실패:', e); }
+}
+function loadLocalData() {
+    try {
+        const d = JSON.parse(localStorage.getItem('daehwa_v2') || '{}');
+        if (Array.isArray(d.notices)) APP_NOTICES = d.notices;
+        if (Array.isArray(d.rooms)) APP_ROOMS = d.rooms;
+        if (Array.isArray(d.residents)) APP_RESIDENTS = d.residents;
+        if (Array.isArray(d.maintenance)) APP_MAINTENANCE = d.maintenance;
+        if (Array.isArray(d.community)) APP_COMMUNITY = d.community;
+        if (d.bookings) APP_BOOKINGS = d.bookings;
+    } catch(e) { console.error('복원 실패:', e); }
+}
+function postToSheet(action, payload) {
+    const url = APPS_SCRIPT_URL || document.getElementById('google-sheet-url').value;
+    if (!url) return Promise.resolve(null);
+    return fetch(url, { method:'POST', headers:{'Content-Type':'text/plain'}, body:JSON.stringify({action, payload}) })
+        .then(r => r.json()).catch(e => { console.error('시트 오류:', e); return null; });
+}
+function syncWithGoogleSheet() {
+    const url = APPS_SCRIPT_URL || document.getElementById('google-sheet-url').value;
+    if (!url) { alert('Apps Script URL을 확인해 주세요.'); return; }
+    alert('구글 시트에서 최신 데이터를 가져오는 중...');
+    fetch(url).then(r => r.json()).then(data => {
+        if (!data) { alert('데이터가 비어 있습니다.'); return; }
+        if (Array.isArray(data.notices)) APP_NOTICES = data.notices;
+        if (Array.isArray(data.rooms)) APP_ROOMS = data.rooms;
+        if (Array.isArray(data.residents)) APP_RESIDENTS = data.residents;
+        saveLocalData(); renderAll(); alert('동기화 완료!');
+    }).catch(() => alert('네트워크 오류. Apps Script 배포 설정을 확인하세요.'));
+}
+
+function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+    document.getElementById('mainFooter').style.marginBottom = IS_ADMIN_LOGGED_IN ? '52px' : '0';
+}
+document.querySelectorAll('[data-tab]').forEach(el => {
+    el.addEventListener('click', e => { e.preventDefault(); showTab(el.dataset.tab); document.getElementById('mainNav').classList.remove('open'); });
+});
+document.getElementById('menuToggle').addEventListener('click', () => document.getElementById('mainNav').classList.toggle('open'));
+
+(function() {
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.getElementById('sliderDots');
+    let cur = 0;
+    slides.forEach((_,i) => {
+        const d = document.createElement('span');
+        d.style.cssText = 'display:inline-block;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:background .3s;';
+        if (i === 0) d.style.background = '#fff';
+        d.addEventListener('click', () => go(i));
+        dots.appendChild(d);
+    });
+    function go(n) {
+        slides[cur].classList.remove('active'); dots.children[cur].style.background = 'rgba(255,255,255,.4)';
+        cur = (n + slides.length) % slides.length;
+        slides[cur].classList.add('active'); dots.children[cur].style.background = '#fff';
+    }
+    setInterval(() => go(cur + 1), 4000);
+})();
+
+// [보완 완료] 카카오 지도 렌더링 독립 구역 (에러 방어막 적용)
+function initKakaoMap() {
+    const container = document.getElementById('map');
+    if (!container) return;
+    
+    try {
+        if (typeof kakao === 'undefined' || !kakao.maps) {
+            container.innerHTML = '<div style="padding:40px 20px;text-align:center;color:#ef4444;font-size:0.9rem;background:#f8fafc;border-radius:8px;">지도 데이터를 불러올 수 없습니다.<br>API 키 또는 도메인 설정을 확인해주세요.</div>';
+            return;
+        }
+        
+        const options = { 
+            center: new kakao.maps.LatLng(37.469, 126.942173),
+            level: 3
+        };
+        
+        const map = new kakao.maps.Map(container, options); 
+        const markerPosition  = new kakao.maps.LatLng(37.469, 126.942173); 
+        const marker = new kakao.maps.Marker({ position: markerPosition });
+        marker.setMap(map);
+
+        const iwContent = '<div style="padding:5px;font-size:12px;font-weight:bold;color:black;text-align:center;width:150px;">대화원룸 신림점</div>';
+        const infowindow = new kakao.maps.InfoWindow({ content : iwContent });
+        infowindow.open(map, marker);
+    } catch (e) {
+        console.error("카카오 지도 실행 중 오류 발생:", e);
+    }
+}
+
+function renderGallery() {
+    if (!APP_ROOMS.length) return;
+    if (CURRENT_GALLERY_IDX >= APP_ROOMS.length) CURRENT_GALLERY_IDX = 0;
+    const r = APP_ROOMS[CURRENT_GALLERY_IDX];
+    const imgEl = document.getElementById('galleryImg');
+    if (imgEl) { imgEl.src = r.img; imgEl.alt = r.title; }
+    const t = document.getElementById('galleryTitle'); if (t) t.textContent = r.title;
+    const p = document.getElementById('galleryPrice'); if (p) p.textContent = r.price || '';
+    const o = document.getElementById('galleryOptions');
+    if (o) o.innerHTML = r.options.split('\n').map(l => `<li>${escapeHtml(l)}</li>`).join('');
+}
+document.getElementById('galleryPrev').addEventListener('click', () => { CURRENT_GALLERY_IDX = (CURRENT_GALLERY_IDX - 1 + APP_ROOMS.length) % APP_ROOMS.length; renderGallery(); });
+document.getElementById('galleryNext').addEventListener('click', () => { CURRENT_GALLERY_IDX = (CURRENT_GALLERY_IDX + 1) % APP_ROOMS.length; renderGallery(); });
+
+function renderNotices() {
+    const makeHtml = (showDel) => APP_NOTICES.length
+        ? APP_NOTICES.map(n => `<div class="notice-item"><div><span class="notice-title">${escapeHtml(n.title)}</span>${showDel ? `<button class="notice-del-btn" style="display:inline-block;" onclick="deleteNotice(${n.id})">삭제</button>` : '<button class="notice-del-btn" onclick="deleteNotice('+n.id+')">삭제</button>'}</div><span class="notice-date">${escapeHtml(n.date)}</span></div>`).join('')
+        : '<p style="color:var(--text-muted);">등록된 공지사항이 없습니다.</p>';
+    const pList = document.getElementById('portal-notice-list'); if (pList) pList.innerHTML = makeHtml(false);
+    const aList = document.getElementById('admin-notice-list'); if (aList) aList.innerHTML = makeHtml(true);
+}
+document.getElementById('adminNoticeForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const title = document.getElementById('noticeTitle').value.trim();
+    const content = document.getElementById('noticeContent').value.trim();
+    if (!title) return;
+    const n = { id:Date.now(), title, content, date:new Date().toISOString().split('T')[0] };
+    APP_NOTICES.unshift(n); saveLocalData(); postToSheet('addNotice', n);
+    document.getElementById('noticeTitle').value = ''; document.getElementById('noticeContent').value = '';
+    renderNotices(); alert('공지사항이 등록되었습니다.');
+});
+function deleteNotice(id) {
+    if (!confirm('이 공지사항을 삭제하시겠습니까?')) return;
+    APP_NOTICES = APP_NOTICES.filter(n => n.id !== id); saveLocalData(); postToSheet('deleteNotice', {id}); renderNotices();
+}
+
+function handleGalleryImgFile(input) {
+    const file = input.files && input.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => { document.getElementById('roomPhotoUrl').value = e.target.result; };
+    reader.readAsDataURL(file);
+}
+document.getElementById('adminGalleryForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('roomName').value.trim();
+    const price = document.getElementById('roomPrice').value.trim();
+    const size = document.getElementById('roomSize').value.trim();
+    const opts = document.getElementById('roomOptions').value.trim();
+    const imgUrl = document.getElementById('roomPhotoUrl').value.trim();
+    const desc = document.getElementById('roomPhotoDesc').value.trim();
+    if (!name || !imgUrl) { alert('원룸명과 사진은 필수입니다.'); return; }
+    const optStr = [size, ...opts.split(',').map(o => o.trim()), desc].filter(Boolean).join('\n');
+    const room = { id:Date.now(), title:name, img:imgUrl, options:optStr, price };
+    APP_ROOMS.push(room); saveLocalData(); postToSheet('addRoom', room);
+    renderGallery(); renderAdminGallery(); document.getElementById('adminGalleryForm').reset(); document.getElementById('roomPhotoUrl').value = '';
+    alert('방 정보가 등록되었습니다. 홈 갤러리에 즉시 반영됩니다.');
+});
+function renderAdminGallery() {
+    const el = document.getElementById('admin-gallery-list'); if (!el) return;
+    el.innerHTML = APP_ROOMS.map(r => `
+        <div class="admin-gallery-card">
+            <img src="${escapeHtml(r.img)}" onerror="this.src='https://via.placeholder.com/200x140?text=No+Image';this.onerror=null;">
+            <div class="admin-gallery-card-body">
+                <div class="card-title">${escapeHtml(r.title)}</div>
+                <div class="card-price">${escapeHtml(r.price||'')}</div>
+                <div class="card-opts">${escapeHtml(r.options).replace(/\n/g,'<br>')}</div>
+            </div>
+            <button class="del-room-btn" onclick="deleteRoom(${r.id})">❌ 삭제</button>
+        </div>`).join('');
+}
+function deleteRoom(id) {
+    if (!confirm('이 방 정보를 삭제하시겠습니까?')) return;
+    APP_ROOMS = APP_ROOMS.filter(r => r.id !== id);
+    if (CURRENT_GALLERY_IDX >= APP_ROOMS.length) CURRENT_GALLERY_IDX = 0;
+    saveLocalData(); postToSheet('deleteRoom', {id}); renderGallery(); renderAdminGallery();
+}
+
+function renderResidents() {
+    const tbody = document.getElementById('residentsTableBody');
+    const count = document.getElementById('residentsCount');
+    if (count) count.textContent = APP_RESIDENTS.length;
+    updateSmsResidentCount();
+    if (!tbody) return;
+    tbody.innerHTML = APP_RESIDENTS.map((r, i) => `
+        <tr>
+            <td>${escapeHtml(r.room)}</td>
+            <td>${escapeHtml(r.name)}</td>
+            <td>${escapeHtml(r.phone)}</td>
+            <td><code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:.85rem;">${escapeHtml(r.pw || '-')}</code></td>
+            <td style="text-align:center;"><button class="res-del-btn" onclick="deleteResident(${i})">삭제</button></td>
+        </tr>`).join('')
+        || '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">등록된 입주민이 없습니다.</td></tr>';
+}
+document.getElementById('adminResidentForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const room = document.getElementById('resRoom').value.trim();
+    const name = document.getElementById('resName').value.trim();
+    const phone = document.getElementById('resPhone').value.trim();
+    const pw = document.getElementById('resPw').value.trim();
+    if (!room || !name || !phone || !pw) return;
+    APP_RESIDENTS.push({room, name, phone, pw}); saveLocalData(); postToSheet('addResident', {room, name, phone, pw});
+    renderResidents();
+    document.getElementById('resRoom').value = ''; document.getElementById('resName').value = '';
+    document.getElementById('resPhone').value = ''; document.getElementById('resPw').value = '';
+});
+function deleteResident(idx) {
+    if (!confirm('이 입주민을 삭제하시겠습니까?')) return;
+    APP_RESIDENTS.splice(idx, 1); saveLocalData(); renderResidents();
+}
+document.getElementById('seedResidentsBtn').addEventListener('click', () => {
+    const sample = [
+        {room:'101호',name:'김철수',phone:'010-1111-2222',pw:'1101'},
+        {room:'102호',name:'이영희',phone:'010-3333-4444',pw:'1102'},
+        {room:'103호',name:'박민준',phone:'010-5555-6666',pw:'1103'},
+        {room:'104호',name:'최수연',phone:'010-7777-8888',pw:'1104'},
+        {room:'105호',name:'정태양',phone:'010-9999-0000',pw:'1105'},
+        {room:'201호',name:'강하늘',phone:'010-1234-5678',pw:'2101'},
+        {room:'202호',name:'윤지수',phone:'010-2345-6789',pw:'2102'},
+        {room:'203호',name:'임동현',phone:'010-3456-7890',pw:'2103'},
+        {room:'301호',name:'한소희',phone:'010-4567-8901',pw:'3101'},
+        {room:'302호',name:'오현식',phone:'010-5678-9012',pw:'3102'}
+    ];
+    APP_RESIDENTS.push(...sample); saveLocalData(); renderResidents(); alert(`샘플 ${sample.length}명이 추가되었습니다.`);
+});
+document.getElementById('clearResidentsBtn').addEventListener('click', () => {
+    if (!confirm('전체 연락처를 초기화하시겠습니까?')) return;
+    APP_RESIDENTS = []; saveLocalData(); renderResidents();
+});
+
+function renderMaintenance() {
+    const el = document.getElementById('requestItems');
+    const total = document.getElementById('stat-total');
+    const waiting = document.getElementById('stat-waiting');
+    const done = document.getElementById('stat-done-m');
+    if (total) total.textContent = APP_MAINTENANCE.length;
+    if (waiting) waiting.textContent = APP_MAINTENANCE.filter(m => m.status === '대기중').length;
+    if (done) done.textContent = APP_MAINTENANCE.filter(m => m.status === '처리완료').length;
+    if (el) el.innerHTML = APP_MAINTENANCE.map(m => `
+        <div class="request-item">
+            <div class="req-title">${escapeHtml(m.title)} <span class="status-badge ${m.status==='처리완료'?'badge-done':'badge-waiting'}">${escapeHtml(m.status)}</span></div>
+            <div class="req-meta">${escapeHtml(m.date)} | ${escapeHtml(m.desc)}</div>
+        </div>`).join('') || '<p style="color:var(--text-muted);">신청 내역이 없습니다.</p>';
+}
+document.getElementById('maintenanceForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const title = document.getElementById('maintTitle').value.trim();
+    const desc = document.getElementById('maintDesc').value.trim();
+    if (!title) return;
+    APP_MAINTENANCE.push({id:Date.now(), title, desc, status:'대기중', date:new Date().toISOString().split('T')[0]});
+    saveLocalData(); renderMaintenance();
+    document.getElementById('maintTitle').value = ''; document.getElementById('maintDesc').value = '';
+    alert('보수 신청이 접수되었습니다. 관리실에서 확인 후 연락드리겠습니다.');
+});
+
+function renderCommunity() {
+    const html = APP_COMMUNITY.map(p => `
+        <div class="post-item">
+            <div class="post-title">${escapeHtml(p.title)}</div>
+            <div class="post-content">${escapeHtml(p.content)}</div>
+            <div style="font-size:.78rem;color:var(--text-muted);margin-top:6px;">${escapeHtml(p.date)}</div>
+            ${p.reply ? `<div class="post-reply"><strong>관리실 답변:</strong> ${escapeHtml(p.reply)}</div>` : ''}
+            ${IS_ADMIN_LOGGED_IN && !p.reply ? `<button onclick="replyInquiry(${p.id})" class="btn btn-primary" style="margin-top:8px;font-size:.82rem;padding:6px 12px;">답변 달기</button>` : ''}
+        </div>`).join('') || '<p style="color:var(--text-muted);">접수된 문의가 없습니다.</p>';
+    const r = document.getElementById('resident-inquiry-list'); if (r) r.innerHTML = html;
+    const a = document.getElementById('admin-inquiry-list'); if (a) a.innerHTML = html;
+}
+document.getElementById('toggleComposerBtn').addEventListener('click', () => document.getElementById('postComposer').classList.toggle('open'));
+document.getElementById('postForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const title = document.getElementById('postTitle').value.trim();
+    const content = document.getElementById('postContent').value.trim();
+    if (!title || !content) return;
+    APP_COMMUNITY.unshift({id:Date.now(), title, content, date:new Date().toISOString().split('T')[0], reply:''});
+    saveLocalData(); renderCommunity();
+    document.getElementById('postTitle').value = ''; document.getElementById('postContent').value = '';
+    document.getElementById('postComposer').classList.remove('open');
+    alert('문의가 접수되었습니다. 관리실에서 빠르게 답변드리겠습니다.');
+});
+function replyInquiry(id) {
+    const text = prompt('답변 내용을 입력하세요:'); if (!text) return;
+    const p = APP_COMMUNITY.find(c => c.id === id);
+    if (p) { p.reply = text; saveLocalData(); renderCommunity(); alert('답변이 등록되었습니다.'); }
+}
+
+document.getElementById('inquiryForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('inquiryName').value.trim();
+    const phone = document.getElementById('inquiryPhone').value.trim();
+    alert(`입주 문의가 접수되었습니다!\n성함: ${name}\n연락처: ${phone}\n빠른 시일 내에 연락드리겠습니다. 😊`);
+    document.getElementById('inquiryForm').reset();
+});
+
+// ── SMS 발송 (Phone Link 연동) ────────────────────────────
+document.getElementById('pairDeviceBtn').addEventListener('click', () => {
+    window.location.href = 'ms-phone-link:';
+    setTimeout(() => {
+        document.getElementById('deviceLinkBadge').className = 'device-status-badge connected';
+        document.getElementById('deviceLinkBadge').innerHTML = '<i class="fa-solid fa-circle-check"></i> Phone Link 실행됨';
+    }, 1000);
+});
+
+document.getElementById('smsContent').addEventListener('input', function() {
+    document.getElementById('smsCharCount').textContent = this.value.length;
+});
+
+function updateSmsResidentCount() {
+    const el = document.getElementById('smsResidentCount');
+    if (el) el.textContent = APP_RESIDENTS.length;
+}
+
+let smsSending = false;
+let smsCancelled = false;
+
+document.getElementById('phoneLinkSendAllBtn').addEventListener('click', async () => {
+    const msg = document.getElementById('smsContent').value.trim();
+    if (!msg) { alert('발송할 메시지 내용을 입력해주세요.'); return; }
+    if (APP_RESIDENTS.length === 0) { alert('먼저 입주민 연락처를 등록해주세요.'); return; }
+    if (smsSending) { alert('현재 발송이 진행 중입니다.'); return; }
+
+    const ok = confirm(`📱 Phone Link로 전체 ${APP_RESIDENTS.length}명에게 순차 발송합니다.\n계속하시겠습니까?`);
+    if (!ok) return;
+
+    smsSending = true;
+    smsCancelled = false;
+    const wrapper = document.getElementById('smsTerminalWrapper');
+    const terminal = document.getElementById('smsTerminal');
+    const bar = document.getElementById('smsProgressBar');
+    const progressText = document.getElementById('smsProgressText');
+    wrapper.style.display = 'block';
+    terminal.innerHTML = '';
+    bar.style.width = '0%';
+
+    terminal.innerHTML += `<div>▶ 발송 시작 | 총 ${APP_RESIDENTS.length}명</div>`;
+
+    for (let i = 0; i < APP_RESIDENTS.length; i++) {
+        if (smsCancelled) { terminal.innerHTML += `<div style="color:#fbbf24;">⏹ 발송이 중단되었습니다.</div>`; break; }
+
+        const r = APP_RESIDENTS[i];
+        const phone = r.phone.replace(/[^0-9]/g, '');
+        progressText.textContent = `${i + 1} / ${APP_RESIDENTS.length}`;
+        bar.style.width = ((i + 1) / APP_RESIDENTS.length * 100) + '%';
+
+        terminal.innerHTML += `<div>📨 [${i+1}/${APP_RESIDENTS.length}] ${r.room} ${r.name} 창 여는 중...</div>`;
+        window.open(`sms:${phone}?body=${encodeURIComponent(msg)}`, '_self');
+
+        if (i < APP_RESIDENTS.length - 1) {
+            await new Promise(res => setTimeout(res, 4000));
+        }
+    }
+
+    if (!smsCancelled) {
+        terminal.innerHTML += `<div style="color:#38bdf8;">✅ 전체 발송 명령 완료! 각 창에서 [보내기]를 눌러주세요.</div>`;
+    }
+    smsSending = false;
+    bar.style.width = '100%';
+});
+
+document.getElementById('smsCancelBtn').addEventListener('click', () => {
+    smsCancelled = true;
+    smsSending = false;
+});
+
+// ── 입주민 포털 로그인 처리 ──────────────────────────────────
+let CURRENT_RESIDENT = null;
+
+document.getElementById('loginForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const room = document.getElementById('loginRoom').value.trim();
+    const pw = document.getElementById('loginPw').value.trim();
+    const errEl = document.getElementById('loginError');
+
+    const found = APP_RESIDENTS.find(r => r.room.replace(/\s/g,'') === room.replace(/\s/g,'') && r.pw === pw);
+
+    if (found) {
+        errEl.style.display = 'none';
+        CURRENT_RESIDENT = found;
+        document.getElementById('residentAvatarLetter').textContent = found.name.charAt(0);
+        document.getElementById('residentNameDisplay').textContent = found.name + ' 입주민';
+        document.getElementById('residentRoomDisplay').textContent = found.room + ' 거주';
+        
+        document.getElementById('portal-login-view').style.display = 'none';
+        document.getElementById('portal-dashboard-view').style.display = 'block';
+        
+        document.querySelectorAll('#portal-dashboard-view .sidebar-item[data-view]').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll('#portal-dashboard-view .dashboard-view').forEach(v => v.classList.remove('active'));
+        document.querySelector('#portal-dashboard-view .sidebar-item[data-view="view-notices"]').classList.add('active');
+        document.getElementById('view-notices').classList.add('active');
+        renderAll();
+    } else {
+        errEl.style.display = 'block';
+        document.getElementById('loginPw').value = '';
+    }
+});
+
+function portalLogout() {
+    CURRENT_RESIDENT = null;
+    document.getElementById('portal-login-view').style.display = 'block';
+    document.getElementById('portal-dashboard-view').style.display = 'none';
+    document.getElementById('loginRoom').value = '';
+    document.getElementById('loginPw').value = '';
+    document.getElementById('loginError').style.display = 'none';
+}
+document.getElementById('sidebar-logout-btn').addEventListener('click', portalLogout);
+
+document.querySelectorAll('#portal-dashboard-view .sidebar-item[data-view]').forEach(item => {
+    item.addEventListener('click', () => {
+        document.querySelectorAll('#portal-dashboard-view .sidebar-item').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll('#portal-dashboard-view .dashboard-view').forEach(v => v.classList.remove('active'));
+        item.classList.add('active');
+        const v = document.getElementById(item.dataset.view); if (v) v.classList.add('active');
+    });
+});
+document.querySelectorAll('#portal-admin-view .sidebar-item[data-adminview]').forEach(item => {
+    item.addEventListener('click', () => {
+        document.querySelectorAll('#portal-admin-view .sidebar-item').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll('#portal-admin-view .dashboard-view').forEach(v => v.classList.remove('active'));
+        item.classList.add('active');
+        const v = document.getElementById(item.dataset.adminview); if (v) v.classList.add('active');
+    });
+});
+
+// ── 원장 보안 인증 시스템 ───────
+function activateAdminMode() {
+    IS_ADMIN_LOGGED_IN = true;
+    document.body.classList.add('admin-mode');
+    document.getElementById('system-lock-btn').innerText = "🔒 원장 로그아웃";
+    document.getElementById('system-lock-btn').style.background = "#dc2626";
+    document.getElementById('portal-login-view').style.display = 'none';
+    document.getElementById('portal-dashboard-view').style.display = 'none';
+    document.getElementById('portal-admin-view').style.display = 'block';
+    
+    if(document.getElementById('google-sheet-url')) {
+        document.getElementById('google-sheet-url').value = APPS_SCRIPT_URL;
+    }
+    
+    alert('원장 인증 성공! 관리자 포털이 열립니다.');
+    renderAll();
+}
+
+function deactivateAdminMode() {
+    IS_ADMIN_LOGGED_IN = false; 
+    document.body.classList.remove('admin-mode');
+    document.getElementById('system-lock-btn').innerText = "🔑 원장 로그인";
+    document.getElementById('system-lock-btn').style.background = "var(--admin-color)";
+    document.getElementById('mainFooter').style.marginBottom = '0';
+    document.getElementById('portal-admin-view').style.display = 'none';
+    document.getElementById('portal-login-view').style.display = 'block';
+    
+    showTab('tab-home'); 
+    alert('원장 모드가 종료되었습니다.');
+}
+
+function toggleAdminAuth() {
+    if (IS_ADMIN_LOGGED_IN) {
+        deactivateAdminMode();
+    } else {
+        const input = prompt("원장 비밀번호를 입력하세요:");
+        if (input === ADMIN_PASSWORD) {
+            activateAdminMode();
+        } else if (input !== null) {
+            alert('비밀번호가 틀렸습니다.');
+        }
+    }
+}
+
+function changeAdminPassword() {
+    if (!IS_ADMIN_LOGGED_IN) {
+        alert("원장 로그인 후 이용 가능합니다.");
+        return;
+    }
+    const currentPwd = prompt("현재 비밀번호를 입력하세요:");
+    if (currentPwd !== ADMIN_PASSWORD) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+    }
+    const newPwd = prompt("새로운 비밀번호를 입력하세요:");
+    if (!newPwd || newPwd.trim() === "") {
+        alert("올바른 비밀번호를 입력해주세요.");
+        return;
+    }
+    ADMIN_PASSWORD = newPwd;
+    localStorage.setItem('daehwa_admin_pwd', newPwd);
+    alert("원장 비밀번호가 브라우저에 안전하게 영구 저장되었습니다! 다음 인터넷 접속부터 적용됩니다.");
+}
+
+function renderAll() {
+    renderNotices(); renderGallery(); renderAdminGallery(); renderResidents();
+    renderMaintenance(); renderCommunity();
+}
+
+window.addEventListener('load', () => {
+    loadLocalData(); 
+    renderAll();
+    initKakaoMap(); // 전체 화면 로딩이 끝난 후 지도를 마지막에 안전하게 실행
+    
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
+        });
+    });
+});
+</script>
 </body>
 </html>
